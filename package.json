@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "googleapis": "^144.0.0",
+    "readline-sync": "^1.4.10"
+  },
+  "type": "module"
+}
