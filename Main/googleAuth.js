@@ -148,5 +148,13 @@ const reqAllActive = async()=>{
   });
   return message;
 }
+const googleStatus = async()=>{
+  const data = await getSpreadSheet();
+  let status = "";
+  if(data.length > 0){
+    return "✅ **Connected to Google Sheets**\n";
+  }
+  return "❌ **Error in conection to Google Sheets**\n";
+}
 
-export { activeRoll, inactiveRoll, createUserToSheet,reqAllActive,getSpreadSheet};
+export { activeRoll, inactiveRoll, createUserToSheet,reqAllActive,getSpreadSheet,googleStatus};
