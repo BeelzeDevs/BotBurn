@@ -8,7 +8,8 @@
     "readline-sync": "^1.4.10"
   },
   "scripts": {
-    "start": "node Main/burnbot.js"
+    "start": "node Main/burnbot.js",
+    "test": "node --watch Main/burnbot.js"
   },
   "type": "module"
 }

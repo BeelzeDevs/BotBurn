@@ -1,4 +1,4 @@
-import { createServer } from 'http'; // solo es usado porque el deploy en render lo necesita, no hace nada
+import { createServer,get } from 'http'; // solo es usado porque el deploy en render lo necesita, no hace nada
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { activeRoll, inactiveRoll, createUserToSheet,reqAllActive,googleStatus } from './googleAuth.js';
 import {updateGitHubFile,githubStatus} from './githubAuth.js';
@@ -155,7 +155,7 @@ client.once('ready', async () => {
 });
 
 // Configura un servidor HTTP vacío para que Render detecte que la aplicación está en ejecución
-const server = http.createServer((req, res) => {
+const server = createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Bot funcionando');
 });
@@ -165,9 +165,9 @@ server.listen(PORT, () => {
     console.log(`Servidor HTTP corriendo en el puerto ${PORT}`);
 });
 
-// Ping al servidor cada 15 minutos
+// Ping al servidor cada 15 minutos para evitar que Render lo ponga en reposo
 setInterval(() => {
-    http.get(`http://localhost:${PORT}`, (res) => {
+    get(`http://localhost:${PORT}`, (res) => {
         console.log(`Ping enviado - Status: ${res.statusCode}`);
     }).on("error", (err) => {
         console.error("Error en el ping:", err.message);
