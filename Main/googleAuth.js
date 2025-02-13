@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
-dotenv.config();
+
 
 // Google bot credentials
 const __filename = fileURLToPath(import.meta.url);
@@ -13,7 +13,10 @@ const __dirname = path.dirname(__filename);
 const CREDENTIALS_PATH = path.join(__dirname, '..', 'Auth', 'credentials.json');
 const credentials = JSON.parse(readFileSync(CREDENTIALS_PATH));
 const { client_secret, client_id, redirect_uris } = credentials.web;
+const envPath = path.join(__dirname, '..', 'Main', '.env');
 
+// Configuracion especial para que lea el dotenv dentro del Main
+dotenv.config({ path: envPath });
 // Google Sheets API 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = 'token.json';
@@ -152,9 +155,9 @@ const googleStatus = async()=>{
   const data = await getSpreadSheet();
   let status = "";
   if(data.length > 0){
-    return "✅ **Connected to Google Sheets**\n";
+    return "・✅ **Connected to Google Sheets**\n";
   }
-  return "❌ **Error in conection to Google Sheets**\n";
+  return "・❌ **Error in conection to Google Sheets**\n";
 }
 
 export { activeRoll, inactiveRoll, createUserToSheet,reqAllActive,getSpreadSheet,googleStatus};

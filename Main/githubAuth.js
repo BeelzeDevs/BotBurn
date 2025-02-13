@@ -1,8 +1,15 @@
 import axios from 'axios';
 import {getSpreadSheet} from '../Main/googleAuth.js';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+// Configuracion especial para que lea el dotenv dentro del Main
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const envPath = path.join(__dirname, '..', 'Main', '.env');
+
+dotenv.config({ path: envPath });
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO_OWNER = "BotGroup123";
@@ -49,7 +56,7 @@ const updateGitHubFile = async () => {
       return "⛔ Error al actualizar el archivo en GitHub.";
     }
   };
-const discordStatus = async () =>{
+const githubStatus = async () =>{
   try {
     const data = await getSpreadSheet();
     
@@ -85,11 +92,11 @@ const discordStatus = async () =>{
       },
     });
     
-    return `✅ Connected to GitHub`;
+    return `・✅ **Connected to GitHub**\n`;
     } catch (error) {
-      return "❌ **Error in conection to Discord**";
+      return "・❌ **Error in conection to Discord**\n";
     }
 }
 
 
-export {updateGitHubFile,discordStatus};
+export {updateGitHubFile,githubStatus};
