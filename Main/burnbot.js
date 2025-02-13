@@ -147,7 +147,7 @@ client.once('ready', async () => {
     };
 
     // Ejecuta la función cada 25 minutos
-    // addReaction();
+    addReaction();
     setInterval(addReaction, 25 * 60 * 1000);
 });
 // Inicia sesión con el token de tu bot de Discord
