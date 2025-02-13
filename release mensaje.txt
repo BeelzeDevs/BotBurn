@@ -1,0 +1,11 @@
+:warning:  **This will be use to create your account for dynamic ID list**
+
+Hey gang, we are testing mode now, i need you all to type : 
+/bot add <pokemonFriendID> in #│💬┃general  **OR** #│💬┃general・help .
+
+This will create your data in the bot. A guide should be posted to start with new system, more information tomorrow.
+
+My account example:
+/bot add 5609525419674049
+
+If you do it wrong, don't panick and do it again. Thanks :laughing:

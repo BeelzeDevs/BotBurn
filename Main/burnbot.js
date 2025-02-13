@@ -155,11 +155,24 @@ client.once('ready', async () => {
 });
 
 // Configura un servidor HTTP vacío para que Render detecte que la aplicación está en ejecución
-createServer((req, res) => {
+const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Bot funcionando');
-}).listen(process.env.PORT || 3000, () => {
-    console.log(`Servidor HTTP corriendo en el puerto ${process.env.PORT || 3000}`);
 });
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Servidor HTTP corriendo en el puerto ${PORT}`);
+});
+
+// Ping al servidor cada 15 minutos
+setInterval(() => {
+    http.get(`http://localhost:${PORT}`, (res) => {
+        console.log(`Ping enviado - Status: ${res.statusCode}`);
+    }).on("error", (err) => {
+        console.error("Error en el ping:", err.message);
+    });
+}, 15 * 60 * 1000); // Cada 15 minutos
+
 // Inicia sesión con el token de tu bot de Discord
 client.login(BOT_TOKEN);
