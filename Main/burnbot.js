@@ -1,7 +1,11 @@
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
-import { activeRoll, inactiveRoll, createUserToSheet,reqAllActive  } from '../Main/googleAuth.js';
+import { activeRoll, inactiveRoll, createUserToSheet,reqAllActive  } from './googleAuth.js';
+import {updateGitHubFile} from './githubAuth.js';
+import dotenv from 'dotenv';
 
-const BOT_TOKEN = 'MTMzOTAxNzY5MzM4NjM3NTE3OA.GUfGv2.EjzxO16HclN-YHo-pXHA709CsKvwrevLrUOc1g';
+dotenv.config();
+
+const BOT_TOKEN = process.env.BOT_TOKEN;
 // Configura el cliente de Discord
 const client = new Client({
     intents: [
@@ -16,6 +20,8 @@ const client = new Client({
         Partials.Reaction,
     ],
   });
+
+
 
 client.once('ready', () => {
     console.log(`¡Bot conectado como ${client.user.tag}!`);
@@ -34,6 +40,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.emoji.name === '⏯️' && reaction.message.channel.name === '▶-start-⏳') {
       // Agregar el nombre del usuario a Google Sheets
       await activeRoll(user.username);
+      let messageToReply = await updateGitHubFile();
+      console.log(messageToReply);
     }
 });
 
@@ -50,7 +58,8 @@ client.on('messageReactionRemove', async(reaction,user)=>{
     if (reaction.emoji.name === '⏯️' && reaction.message.channel.name === '▶-start-⏳') {
         // Cambiar el estado del nombre del usuario en Google Sheets
         await inactiveRoll(user.username);
-        
+        let messageToReply = await updateGitHubFile();
+        console.log(messageToReply);
       }
 });
 
@@ -82,7 +91,8 @@ client.on('messageCreate', async (message) => {
     }
     if(message.content.startsWith(prefixCommands))
     {
-        const messageToReply = "📕 Commands:\n `・/bot add <Game ID>\n・/bot actives`";
+        let messageToReply = "📕 Commands:\n`\t・/bot add <Game ID>`";
+        messageToReply += "\n`\t・/bot actives`";
         message.reply(messageToReply);
     }
         

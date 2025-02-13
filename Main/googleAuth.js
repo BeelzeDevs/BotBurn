@@ -3,7 +3,9 @@ import { question } from 'readline-sync';
 import { readFileSync, existsSync, writeFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 // Google bot credentials
 const __filename = fileURLToPath(import.meta.url);
@@ -16,15 +18,10 @@ const { client_secret, client_id, redirect_uris } = credentials.web;
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = 'token.json';
 
-
-// Authenticate bot 
-
-
-
 // Configuración de las credenciales de OAuth2
 const CLIENT_ID = client_id;
 const CLIENT_SECRET = client_secret;
-const REFRESH_TOKEN = "1//04AYFBbsUdFJJCgYIARAAGAQSNwF-L9Irep6StqrUcT04h8aJt-8UqKfxg8D7dKdKeVAbx5M6Ldu4bYFgus76QWkEli8Mgzrmr5c";
+const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
 
 // Crear un cliente OAuth2
 const auth = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET);
@@ -37,7 +34,7 @@ const sheets = google.sheets({ version: 'v4', auth });
 
 // ID de la hoja de cálculo y el rango que deseas leer
 const SPREADSHEET_ID = '1dp1-Wxunl3mAQNLwLM-SdsbkniAduvRBJNNMqx2vWXE';  // El ID de tu Google Sheets
-const memberCount = 50;
+const memberCount = 100;
 const RANGE = `Hoja1!A1:C${memberCount}`;  // Range del sheet
 
 // Función para obtener los datos de Google Sheets
@@ -152,4 +149,4 @@ const reqAllActive = async()=>{
   return message;
 }
 
-export { activeRoll, inactiveRoll, createUserToSheet,reqAllActive};
+export { activeRoll, inactiveRoll, createUserToSheet,reqAllActive,getSpreadSheet};
