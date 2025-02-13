@@ -43,7 +43,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         }
     }
     
-    if (reaction.emoji.name === '⏯️' && reaction.message.channel.name === '▶-start-⏳') {
+    if (reaction.emoji.name === '⏯️' && reaction.message.channel.name === '▶・start・⏳') {
       // Agregar el nombre del usuario a Google Sheets
       await activeRoll(user.username);
       let messageToReply = await updateGitHubFile();
@@ -61,7 +61,7 @@ client.on('messageReactionRemove', async(reaction,user)=>{
         }
     }
 
-    if (reaction.emoji.name === '⏯️' && reaction.message.channel.name === '▶-start-⏳') {
+    if (reaction.emoji.name === '⏯️' && reaction.message.channel.name === '▶・start・⏳') {
         // Cambiar el estado del nombre del usuario en Google Sheets
         await inactiveRoll(user.username);
         let messageToReply = await updateGitHubFile();
@@ -131,7 +131,7 @@ client.once('ready', async () => {
     const MESSAGE_ID = '1338736226815049748';
 
     // Encuentra el canal donde está el mensaje
-    const channel = client.channels.cache.find(c => c.name === '▶-start-⏳');
+    const channel = client.channels.cache.find(c => c.name === '▶・start・⏳');
     if (!channel) {
         return;
     }
@@ -143,7 +143,6 @@ client.once('ready', async () => {
             
             if (message) {
                 await message.react('🔄'); // Emoji de reloj de arena
-                console.log(`Reacción 🔄 agregada al mensaje ID: ${MESSAGE_ID}`);
             }
         } catch (error) {
             console.error(`Error al reaccionar al mensaje con ID ${MESSAGE_ID}:`, error);
