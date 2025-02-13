@@ -13,10 +13,13 @@ const __dirname = path.dirname(__filename);
 const CREDENTIALS_PATH = path.join(__dirname, '..', 'Auth', 'credentials.json');
 const credentials = JSON.parse(readFileSync(CREDENTIALS_PATH));
 const { client_secret, client_id, redirect_uris } = credentials.web;
-const envPath = path.join(__dirname, '..', 'Main', '.env');
 
 // Configuracion especial para que lea el dotenv dentro del Main
-dotenv.config({ path: envPath });
+// const envPath = path.join(__dirname, '..', 'Main', '.env');
+// dotenv.config({ path: envPath });
+
+// solo para deploy
+dotenv.config();
 // Google Sheets API 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = 'token.json';

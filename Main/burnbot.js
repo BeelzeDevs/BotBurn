@@ -6,11 +6,14 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const envPath = path.join(__dirname, '..', 'Main', '.env');
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// const envPath = path.join(__dirname, '..', 'Main', '.env');
 
-dotenv.config({ path: envPath });
+// dotenv.config({ path: envPath });
+
+// solo para deploy
+dotenv.config();
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 // Configura el cliente de Discord
