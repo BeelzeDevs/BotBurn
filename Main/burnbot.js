@@ -127,31 +127,6 @@ client.on('messageCreate', async (message) => {
 client.once('ready', async () => {
     console.log(`¡Bot conectado como ${client.user.tag}!`);
 
-    // ID del mensaje fijo
-    const MESSAGE_ID = '1338736226815049748';
-
-    // Encuentra el canal donde está el mensaje
-    const channel = client.channels.cache.find(c => c.name === '▶・start・⏳');
-    if (!channel) {
-        return;
-    }
-
-    // Función que reacciona al mensaje fijo
-    const addReaction = async () => {
-        try {
-            const message = await channel.messages.fetch(MESSAGE_ID); // Obtiene el mensaje por su ID
-            
-            if (message) {
-                await message.react('🔄'); // Emoji de reloj de arena
-            }
-        } catch (error) {
-            console.error(`Error al reaccionar al mensaje con ID ${MESSAGE_ID}:`, error);
-        }
-    };
-
-    // Ejecuta la función cada 25 minutos
-    addReaction();
-    setInterval(addReaction, 25 * 60 * 1000);
 });
 
 // Configura un servidor HTTP vacío para que Render detecte que la aplicación está en ejecución
