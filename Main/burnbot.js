@@ -1,3 +1,4 @@
+import { createServer } from 'http'; // solo es usado porque el deploy en render lo necesita, no hace nada
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { activeRoll, inactiveRoll, createUserToSheet,reqAllActive,googleStatus } from './googleAuth.js';
 import {updateGitHubFile,githubStatus} from './githubAuth.js';
@@ -153,5 +154,14 @@ client.once('ready', async () => {
     addReaction();
     setInterval(addReaction, 25 * 60 * 1000);
 });
+
+// Configura un servidor HTTP vacío para que Render detecte que la aplicación está en ejecución
+createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Bot funcionando');
+}).listen(process.env.PORT || 3000, () => {
+    console.log(`Servidor HTTP corriendo en el puerto ${process.env.PORT || 3000}`);
+});
+
 // Inicia sesión con el token de tu bot de Discord
 client.login(BOT_TOKEN);
