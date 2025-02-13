@@ -162,6 +162,5 @@ createServer((req, res) => {
 }).listen(process.env.PORT || 3000, () => {
     console.log(`Servidor HTTP corriendo en el puerto ${process.env.PORT || 3000}`);
 });
-
 // Inicia sesión con el token de tu bot de Discord
 client.login(BOT_TOKEN);
