@@ -15,11 +15,11 @@ const credentials = JSON.parse(readFileSync(CREDENTIALS_PATH));
 const { client_secret, client_id, redirect_uris } = credentials.web;
 
 // Configuracion especial para que lea el dotenv dentro del Main
-// const envPath = path.join(__dirname, '..', 'Main', '.env');
-// dotenv.config({ path: envPath });
+const envPath = path.join(__dirname, '..', 'Main', '.env');
+dotenv.config({ path: envPath });
 
 // solo para deploy
-dotenv.config();
+// dotenv.config();
 // Google Sheets API 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = 'token.json';
@@ -42,7 +42,7 @@ const sheets = google.sheets({ version: 'v4', auth });
 const SPREADSHEET_ID = '1dp1-Wxunl3mAQNLwLM-SdsbkniAduvRBJNNMqx2vWXE';  // El ID de tu Google Sheets
 const memberCount = 100;
 const RANGE = `Hoja1!A1:C${memberCount}`;  // Range del sheet
-
+const RANGE_GameList = `Hoja1!E1:E1007`;
 // Función para obtener los datos de Google Sheets
 const getSpreadSheet = async () => {
   try {
@@ -57,6 +57,20 @@ const getSpreadSheet = async () => {
     return [];
   }
 };
+
+const getUsernamesTXT = async () =>  {
+    try{
+      const resp = await sheets.spreadsheets.values.get({
+        spreadsheetId: SPREADSHEET_ID,
+        range: RANGE_GameList,
+      });
+      const data = resp.data.values || [];
+      return data;
+    }catch(error){
+      console.error('Error al leer los usernames.txt de la columna E');
+      return [];
+    }
+  };
 
 const activeRoll = async (username) => {
   const data = await getSpreadSheet();
@@ -163,4 +177,4 @@ const googleStatus = async()=>{
   return "・❌ **Error in conection to Google Sheets**\n";
 }
 
-export { activeRoll, inactiveRoll, createUserToSheet,reqAllActive,getSpreadSheet,googleStatus};
+export { activeRoll, inactiveRoll, createUserToSheet,reqAllActive,getSpreadSheet,googleStatus, getUsernamesTXT};

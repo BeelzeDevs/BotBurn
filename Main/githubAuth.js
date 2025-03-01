@@ -5,14 +5,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 // Configuracion especial para que lea el dotenv dentro del Main
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-// const envPath = path.join(__dirname, '..', 'Main', '.env');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const envPath = path.join(__dirname, '..', 'Main', '.env');
 
-// dotenv.config({ path: envPath });
+dotenv.config({ path: envPath });
 
 // solo para deploy
-dotenv.config();
+// dotenv.config();
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO_OWNER = "BotGroup123";
