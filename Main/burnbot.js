@@ -1,11 +1,12 @@
 import { createServer } from 'http'; // solo es usado porque el deploy en render lo necesita, no hace nada
-import { Client, GatewayIntentBits, Partials } from 'discord.js';
+import { Client, GatewayIntentBits, Partials, AttachmentBuilder } from 'discord.js';
 import { activeRoll, inactiveRoll, createUserToSheet,reqAllActive,googleStatus, getUsernamesTXT } from './googleAuth.js';
 import {updateGitHubFile,githubStatus} from './githubAuth.js';
 import { google } from 'googleapis';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,14 +61,25 @@ client.on('messageCreate', async (message) => {
 
     if(message.content.startsWith(prefixGenerateSuffix))
     {
-        const suffix = message.content.slice(prefixGenerateSuffix.length);
-        if(content.length > 1 && content.length <= 3) {
+        const suffix = message.content.slice(prefixGenerateSuffix.length).toUpperCase();
+        if(suffix.length > 1 && suffix.length <= 3) {
             const usernames = await getUsernamesTXT();
             const addPrefix = usernames.map((item)=> item.concat(suffix));
             const filteredusernames = addPrefix.filter((item)=> item.length < 14);
-            messageToReply = "📕 Usernames.txt:`";
-            messageToReply += filteredusernames + "`";
-            console.log(messageToReply);
+            let messageToReply = "";
+            filteredusernames.forEach(element => {
+                messageToReply += element + "\n";
+            });
+
+            fs.writeFileSync('pokemon_list.txt', messageToReply);
+            const fileOfNames = new AttachmentBuilder('pokemon_list.txt');
+            message.reply({ content: '**Usernames.txt:**', files: [fileOfNames] });
+            // const chunkOfMessage = messageToReply.match(/.{1,2000}/g); // Divide en partes de 4000 caracteres o menos
+            // for (const chunk of chunkOfMessage) {
+            //     await message.reply(chunk);
+            // }
+        }else{
+            message.reply(`**⛔Error: ${(message.author.username).toUpperCase()} ** /bot suffix <ID>.\n**- ID must be 2 or 3 chars max**`);
         }
          
     }
@@ -75,6 +87,7 @@ client.on('messageCreate', async (message) => {
     if(message.content.startsWith(prefixCommands))
     {
         let messageToReply = "📕 Commands:\n`\t・/bot add <Game ID>`";
+        messageToReply += "\n `/t・/bot suffix`";
         messageToReply += "\n`\t・/bot status`";
         messageToReply += "\n`\t・/bot help`";
         message.reply(messageToReply);

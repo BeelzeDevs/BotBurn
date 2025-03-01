@@ -1,5 +1,4 @@
 import { google } from 'googleapis';
-import { question } from 'readline-sync';
 import { readFileSync, existsSync, writeFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -10,6 +9,7 @@ import dotenv from 'dotenv';
 // Google bot credentials
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 const CREDENTIALS_PATH = path.join(__dirname, '..', 'Auth', 'credentials.json');
 const credentials = JSON.parse(readFileSync(CREDENTIALS_PATH));
 const { client_secret, client_id, redirect_uris } = credentials.web;
@@ -22,18 +22,34 @@ dotenv.config({ path: envPath });
 // dotenv.config();
 // Google Sheets API 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-const TOKEN_PATH = 'token.json';
+const TOKEN_PATH = path.join(__dirname, '..', 'Main', 'token.json');
 
 // Configuración de las credenciales de OAuth2
 const CLIENT_ID = client_id;
 const CLIENT_SECRET = client_secret;
-const REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
+const tokenData = JSON.parse(readFileSync(TOKEN_PATH));
 
 // Crear un cliente OAuth2
 const auth = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET);
 
 // Configurar el refresh_token para que no tengas que iniciar sesión cada vez
-auth.setCredentials({ refresh_token: REFRESH_TOKEN });
+auth.setCredentials(tokenData);
+
+// 🔄 Function que automáticamente hace el refresh del token cuando expira
+auth.on('tokens', (newTokens) => {
+  if (newTokens.refresh_token) {
+      tokenData.refresh_token = newTokens.refresh_token; // Save new refresh token if provided
+  }
+  tokenData.access_token = newTokens.access_token;
+  tokenData.expiry_date = newTokens.expiry_date;
+
+  writeFileSync(TOKEN_PATH, JSON.stringify(tokenData)); // Save updated tokens
+  console.log('🔄 Google API token refreshed and saved!');
+});
+
+
+
+
 
 // Crear una instancia de Google Sheets API
 const sheets = google.sheets({ version: 'v4', auth });
@@ -65,9 +81,9 @@ const getUsernamesTXT = async () =>  {
         range: RANGE_GameList,
       });
       const data = resp.data.values || [];
-      return data;
+      return data.flat();
     }catch(error){
-      console.error('Error al leer los usernames.txt de la columna E');
+      console.error('Error al leer los usernames.txt de la columna E', error.response?.data || error.message);
       return [];
     }
   };
