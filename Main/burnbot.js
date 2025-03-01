@@ -71,8 +71,8 @@ client.on('messageCreate', async (message) => {
                 messageToReply += element + "\n";
             });
 
-            fs.writeFileSync('pokemon_list.txt', messageToReply);
-            const fileOfNames = new AttachmentBuilder('pokemon_list.txt');
+            fs.writeFileSync('usernames.txt', messageToReply);
+            const fileOfNames = new AttachmentBuilder('usernames.txt');
             message.reply({ content: '**Usernames.txt:**', files: [fileOfNames] });
             // const chunkOfMessage = messageToReply.match(/.{1,2000}/g); // Divide en partes de 4000 caracteres o menos
             // for (const chunk of chunkOfMessage) {
