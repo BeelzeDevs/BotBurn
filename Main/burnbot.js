@@ -120,16 +120,16 @@ client.once('ready', async () => {
 });
 
 // Configura un servidor HTTP vacío para que Render detecte que la aplicación está en ejecución
-// const server = createServer((req, res) => {
-//     console.log(`Solicitud recibida: ${req.method} ${req.url}`); // 🔍 Verifica si hay actividad
-//     res.writeHead(200, { 'Content-Type': 'text/plain' });
-//     res.end('Bot funcionando');
-// });
+const server = createServer((req, res) => {
+    console.log(`Solicitud recibida: ${req.method} ${req.url}`); // 🔍 Verifica si hay actividad
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Bot funcionando');
+});
 
-// const PORT = process.env.PORT || 3000;
-// server.listen(PORT, () => {
-//     console.log(`Servidor HTTP corriendo en el puerto ${PORT}`);
-// });
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Servidor HTTP corriendo en el puerto ${PORT}`);
+});
 
 // Inicia sesión con el token de tu bot de Discord
 client.login(BOT_TOKEN);
