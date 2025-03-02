@@ -8,13 +8,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const envPath = path.join(__dirname, '..', 'Main', '.env');
-dotenv.config({ path: envPath });
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// const envPath = path.join(__dirname, '..', 'Main', '.env');
+// dotenv.config({ path: envPath });
 
 // solo para deploy
-// dotenv.config();
+dotenv.config();
 
 let rollingUsers = [];
 
@@ -87,7 +87,7 @@ client.on('messageCreate', async (message) => {
     if(message.content.startsWith(prefixCommands))
     {
         let messageToReply = "📕 Commands:\n`\t・/bot add <Game ID>`";
-        messageToReply += "\n `/t・/bot suffix`";
+        messageToReply += "\n`/t・/bot suffix`";
         messageToReply += "\n`\t・/bot status`";
         messageToReply += "\n`\t・/bot help`";
         message.reply(messageToReply);
